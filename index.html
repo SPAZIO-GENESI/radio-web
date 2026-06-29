@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Radio Spazio Genesi</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Radio Spazio Genesi</h1>
+  </header>
+
+  <main>
+
+    <section id="player-section">
+      <div id="artwork-wrapper">
+        <img id="artwork" src="placeholder.svg" alt="Copertina" />
+      </div>
+      <div id="now-playing">
+        <p id="np-artist">—</p>
+        <p id="np-title">In caricamento...</p>
+      </div>
+      <div id="controls">
+        <button id="play-btn" aria-label="Riproduci">&#9654;</button>
+        <span id="listeners">— ascoltatori</span>
+      </div>
+      <audio id="audio" preload="none"></audio>
+    </section>
+
+    <section id="schedule-section">
+      <h2>Prossimo programma</h2>
+      <div id="next-show">
+        <p id="show-name">—</p>
+        <p id="show-time">—</p>
+      </div>
+    </section>
+
+    <section id="info-section">
+      <h2>La stazione</h2>
+      <p id="station-description">—</p>
+      <p id="station-genre">—</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Spazio Genesi &mdash; <a href="https://spaziogenesi.org" target="_blank">spaziogenesi.org</a></p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

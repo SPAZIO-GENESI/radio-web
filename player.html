@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Radio Spazio Genesi</title>
+  <meta name="description" content="Radio Spazio Genesi — arte, cultura, trasmissione." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <span class="station-eyebrow">Spazio Genesi</span>
+    <h1>Radio</h1>
+  </header>
+
+  <main>
+
+    <section id="player-section">
+      <div id="artwork-wrapper">
+        <img id="artwork" src="" alt="Copertina" />
+        <div id="artwork-placeholder" aria-hidden="true"></div>
+      </div>
+
+      <div id="meta">
+        <p id="np-artist">—</p>
+        <p id="np-title">In caricamento…</p>
+      </div>
+
+      <div id="controls">
+        <div id="on-air" aria-live="polite">
+          <span id="on-air-dot"></span>
+          <span id="on-air-label">IN ONDA</span>
+        </div>
+        <button id="play-btn" aria-label="Riproduci">
+          <svg id="icon-play" viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="icon-pause" viewBox="0 0 24 24" fill="currentColor" width="22" height="22" hidden><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        </button>
+        <span id="listeners" class="mono">—</span>
+      </div>
+
+      <audio id="audio" preload="none"></audio>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="schedule-section">
+      <span class="section-label">Prossimo programma</span>
+      <p id="show-name">—</p>
+      <p id="show-time" class="mono">—</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="info-section">
+      <span class="section-label">La stazione</span>
+      <p id="station-description">—</p>
+      <p id="station-genre" class="mono"></p>
+    </section>
+
+  </main>
+
+  <footer>
+    <a href="https://spaziogenesi.org" target="_blank" rel="noopener">spaziogenesi.org</a>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

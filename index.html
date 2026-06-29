@@ -3,70 +3,147 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Radio Spazio Genesi</title>
-  <meta name="description" content="Radio Spazio Genesi — arte, cultura, trasmissione." />
+  <title>Radio Spazio Genesi — In arrivo</title>
+  <meta name="description" content="Spazio Genesi sta lavorando a un nuovo progetto di audio e intelligenza artificiale." />
+  <meta name="robots" content="noindex" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --background: oklch(98% .01 60);
+      --foreground: oklch(12% .02 250);
+      --accent: oklch(60% .2 30);
+      --border: oklch(90% .01 60);
+      --muted-foreground: oklch(45% .01 60);
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem 1.5rem;
+    }
+
+    main {
+      max-width: 540px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--muted-foreground);
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-weight: 300;
+      font-size: clamp(3.5rem, 12vw, 6rem);
+      line-height: 0.95;
+      letter-spacing: -0.01em;
+    }
+
+    /* Signature: barre audio che "respirano" — l'attesa di un suono che arriverà */
+    .bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+      height: 34px;
+      margin: 2.5rem 0;
+    }
+
+    .bars span {
+      width: 3px;
+      background: var(--accent);
+      height: 100%;
+      transform-origin: bottom;
+      animation: breathe 2.4s ease-in-out infinite;
+    }
+
+    .bars span:nth-child(1) { animation-delay: 0s;    }
+    .bars span:nth-child(2) { animation-delay: 0.2s;  }
+    .bars span:nth-child(3) { animation-delay: 0.4s;  }
+    .bars span:nth-child(4) { animation-delay: 0.6s;  }
+    .bars span:nth-child(5) { animation-delay: 0.3s;  }
+    .bars span:nth-child(6) { animation-delay: 0.5s;  }
+    .bars span:nth-child(7) { animation-delay: 0.1s;  }
+
+    @keyframes breathe {
+      0%, 100% { transform: scaleY(0.18); opacity: 0.5; }
+      50%      { transform: scaleY(1);    opacity: 1;   }
+    }
+
+    .lead {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(1.4rem, 4vw, 1.9rem);
+      line-height: 1.4;
+      margin-bottom: 1.25rem;
+    }
+
+    .lead em { color: var(--accent); font-style: italic; }
+
+    .note {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--muted-foreground);
+      max-width: 400px;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 1.75rem;
+      left: 0;
+      right: 0;
+      text-align: center;
+    }
+
+    footer a {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted-foreground);
+      text-decoration: none;
+    }
+
+    footer a:hover { color: var(--accent); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .bars span { animation: none; transform: scaleY(0.4); opacity: 0.7; }
+    }
+  </style>
 </head>
 <body>
 
-  <header>
-    <span class="station-eyebrow">Spazio Genesi</span>
-    <h1>Radio</h1>
-  </header>
-
   <main>
+    <span class="eyebrow">Spazio Genesi</span>
+    <h1>Radio</h1>
 
-    <section id="player-section">
-      <div id="artwork-wrapper">
-        <img id="artwork" src="" alt="Copertina" />
-        <div id="artwork-placeholder" aria-hidden="true"></div>
-      </div>
+    <div class="bars" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
 
-      <div id="meta">
-        <p id="np-artist">—</p>
-        <p id="np-title">In caricamento…</p>
-      </div>
-
-      <div id="controls">
-        <div id="on-air" aria-live="polite">
-          <span id="on-air-dot"></span>
-          <span id="on-air-label">IN ONDA</span>
-        </div>
-        <button id="play-btn" aria-label="Riproduci">
-          <svg id="icon-play" viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M8 5v14l11-7z"/></svg>
-          <svg id="icon-pause" viewBox="0 0 24 24" fill="currentColor" width="22" height="22" hidden><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-        </button>
-        <span id="listeners" class="mono">—</span>
-      </div>
-
-      <audio id="audio" preload="none"></audio>
-    </section>
-
-    <div class="divider"></div>
-
-    <section id="schedule-section">
-      <span class="section-label">Prossimo programma</span>
-      <p id="show-name">—</p>
-      <p id="show-time" class="mono">—</p>
-    </section>
-
-    <div class="divider"></div>
-
-    <section id="info-section">
-      <span class="section-label">La stazione</span>
-      <p id="station-description">—</p>
-      <p id="station-genre" class="mono"></p>
-    </section>
-
+    <p class="lead">Stiamo dando forma a un progetto di <em>audio e intelligenza artificiale</em>.</p>
+    <p class="note">Un nuovo modo di ascoltare arte e cultura è in lavorazione. Torna presto: presto saremo in onda.</p>
   </main>
 
   <footer>
     <a href="https://spaziogenesi.org" target="_blank" rel="noopener">spaziogenesi.org</a>
   </footer>
 
-  <script src="app.js"></script>
 </body>
 </html>

@@ -4,10 +4,13 @@ const REFRESH_MS = 15000;
 
 const audio = document.getElementById('audio');
 const playBtn = document.getElementById('play-btn');
+const iconPlay = document.getElementById('icon-play');
+const iconPause = document.getElementById('icon-pause');
 const artwork = document.getElementById('artwork');
 const npArtist = document.getElementById('np-artist');
 const npTitle = document.getElementById('np-title');
 const listenersEl = document.getElementById('listeners');
+const onAir = document.getElementById('on-air');
 const showName = document.getElementById('show-name');
 const showTime = document.getElementById('show-time');
 const stationDesc = document.getElementById('station-description');
@@ -15,26 +18,42 @@ const stationGenre = document.getElementById('station-genre');
 
 let playing = false;
 let streamUrl = null;
+let currentArtUrl = null;
+
+function setPlaying(state) {
+  playing = state;
+  iconPlay.hidden = state;
+  iconPause.hidden = !state;
+  onAir.classList.toggle('visible', state);
+  playBtn.setAttribute('aria-label', state ? 'Pausa' : 'Riproduci');
+}
 
 playBtn.addEventListener('click', () => {
   if (!streamUrl) return;
   if (playing) {
     audio.pause();
     audio.src = '';
-    playBtn.innerHTML = '&#9654;';
-    playing = false;
+    setPlaying(false);
   } else {
-    audio.src = streamUrl + '?nocache=' + Date.now();
-    audio.play();
-    playBtn.innerHTML = '&#9646;&#9646;';
-    playing = true;
+    audio.src = streamUrl + '?t=' + Date.now();
+    audio.play().catch(() => {});
+    setPlaying(true);
   }
 });
 
-function formatTime(isoString) {
-  if (!isoString) return '—';
-  const d = new Date(isoString * 1000);
-  return d.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+audio.addEventListener('error', () => setPlaying(false));
+
+function formatTime(ts) {
+  if (!ts) return '—';
+  return new Date(ts * 1000).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+}
+
+function setArtwork(url) {
+  if (!url || url === currentArtUrl) return;
+  currentArtUrl = url;
+  artwork.classList.remove('loaded');
+  artwork.onload = () => artwork.classList.add('loaded');
+  artwork.src = url;
 }
 
 async function fetchNowPlaying() {
@@ -43,32 +62,26 @@ async function fetchNowPlaying() {
     const data = await res.json();
 
     const song = data.now_playing?.song;
-    const listeners = data.listeners?.current ?? 0;
+    const count = data.listeners?.current ?? 0;
     const station = data.station;
 
     if (song) {
       npTitle.textContent = song.title || '—';
       npArtist.textContent = song.artist || '—';
-      if (song.art) artwork.src = song.art;
+      setArtwork(song.art);
     }
 
-    listenersEl.textContent = `${listeners} ${listeners === 1 ? 'ascoltatore' : 'ascoltatori'}`;
+    listenersEl.textContent = count === 1 ? '1 ascoltat.' : `${count} ascoltat.`;
 
-    if (station) {
+    if (station && !streamUrl) {
+      streamUrl = station.listen_url
+        || station.mounts?.[0]?.url
+        || null;
       stationDesc.textContent = station.description || '—';
       stationGenre.textContent = station.genre || '';
-      if (!streamUrl && station.listen_url) {
-        streamUrl = station.listen_url;
-      }
     }
-
-    // fallback stream url from mounts
-    if (!streamUrl && data.station?.mounts?.length) {
-      streamUrl = data.station.mounts[0].url;
-    }
-
   } catch (e) {
-    console.error('Errore nowplaying:', e);
+    console.warn('nowplaying error', e);
   }
 }
 
@@ -76,19 +89,18 @@ async function fetchSchedule() {
   try {
     const res = await fetch(`${API_BASE}/station/${STATION}/schedule`);
     const data = await res.json();
-
     const now = Math.floor(Date.now() / 1000);
-    const next = data.find(item => item.start_timestamp > now);
+    const next = Array.isArray(data) ? data.find(s => s.start_timestamp > now) : null;
 
     if (next) {
       showName.textContent = next.name || '—';
-      showTime.textContent = `${formatTime(next.start_timestamp)} – ${formatTime(next.end_timestamp)}`;
+      showTime.textContent = `${formatTime(next.start_timestamp)} — ${formatTime(next.end_timestamp)}`;
     } else {
       showName.textContent = 'Nessun programma pianificato';
       showTime.textContent = '';
     }
   } catch (e) {
-    console.error('Errore schedule:', e);
+    console.warn('schedule error', e);
   }
 }
 
